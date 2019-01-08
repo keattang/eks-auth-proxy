@@ -84,14 +84,14 @@ const parser = yargs
                 describe:
                     'Whether or not to use HTTPS when contacting the upstream server.',
                 type: 'boolean',
-                default: true,
+                default: false,
                 group: 'Proxy options',
             },
             'proxy-preserve-host': {
                 describe:
                     'Whether or not to pass on the host header to the upstream server.',
                 type: 'boolean',
-                default: true,
+                default: false,
                 group: 'Proxy options',
             },
         });
