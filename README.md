@@ -5,7 +5,7 @@ This proxy server is designed to sit in front of applications that run in EKS cl
 ## Running the server
 
 ```
-docker run keattang/eks-auth-proxy start \
+docker run keattang/eks-auth-proxy ./start \
     --cookie-secret random-string \
     --cluster-name my-cluster \
     --iam-role arn:aws:iam::xxxxxxxxxxxx:role/my-role \
