@@ -1,6 +1,6 @@
 {
     "name": "eks-auth-proxy",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Authentication proxy for Amazon EKS",
     "main": "src/index.js",
     "author": "Keat Tang <keat@propelleraero.com.au>",
