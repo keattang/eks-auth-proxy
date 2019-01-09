@@ -1,6 +1,18 @@
 # eks-auth-proxy
 
-This proxy server is designed to sit in front of applications that run in EKS clusters and access the Kubernetes API. It prevents access until the user has logged in using a third party provider (e.g. Google, Github, etc.) that can be federated with an AWS IAM role. It then creates an EKS authorization token based on the temporary credentials it receives from assuming the role. This is passed on as `Bearer` token via the `Authorization` header to the upstream server. This is particularly useful for exposing and protecting the Kubernetes dashboard.
+This proxy server is designed to sit in front of applications that run in EKS clusters and access the Kubernetes API. It prevents access until the user has logged in using a third party provider (e.g. Google, Github, etc.) that can be federated with one or more AWS IAM roles. It then creates an EKS authorization token based on the temporary credentials it receives from assuming one of the roles. This is passed on as `Bearer` token via the `Authorization` header to the upstream server. This is particularly useful for exposing and protecting the Kubernetes dashboard.
+
+The server is designed to sit behind a trusted reverse proxy (e.g. nginx, ELB, ALB) that handles SSL/TLS termination. DO NOT expose this directly to the internet.
+
+Currently, only OIDC identity providers are supported but this could be extended to also support SAML providers. (Pull requests welcome) For more information on setting up an OIDC identity provider in AWS see [this article](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html)
+
+## Prerequisites
+
+Before running this server you will need to do the following:
+
+-   Setup an OIDC identity provider (e.g. [Google](https://developers.google.com/identity/protocols/OpenIDConnect))
+-   Use the details from the previous step to create an OIDC identity provider and associated role in AWS https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html
+-   Add a role mapping in the `aws-auth` configmap in your EKS cluster https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html
 
 ## Running the server
 
