@@ -43,7 +43,7 @@ const getTemporaryAwsCredentials = (email, idToken) =>
         })
         .promise();
 
-const getEksAuthToken = async credentials => {
+const getEksAuthToken = credentials => {
     const eksToken = callAuthenticator(credentials);
     return eksToken.status;
 };
