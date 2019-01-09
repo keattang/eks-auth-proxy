@@ -28,6 +28,12 @@ const parser = yargs
                 default: '/login',
                 group: 'Server options',
             },
+            debug: {
+                describe: 'Whether or not to enable DEBUG level logging',
+                type: 'boolean',
+                default: false,
+                group: 'Server options',
+            },
             'cluster-name': {
                 describe:
                     'The name of the EKS cluster. This will be used to generate the EKS auth token.',

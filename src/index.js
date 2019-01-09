@@ -16,6 +16,7 @@ const {
     refreshEksTokenMiddleware,
     checkAwsCredentialsMiddleware,
 } = require('./aws');
+const log = require('./logger');
 
 const startServer = async () => {
     await configurePassport();
@@ -50,7 +51,7 @@ const startServer = async () => {
     app.use(router.allowedMethods());
 
     app.listen(port);
-    console.log('Proxy server running on port', port);
+    log.info(`Proxy server running on port ${port}`);
 };
 
 startServer();

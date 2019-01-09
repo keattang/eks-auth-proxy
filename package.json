@@ -1,6 +1,6 @@
 {
     "name": "eks-auth-proxy",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "description": "Authentication proxy for Amazon EKS",
     "main": "src/index.js",
     "author": "Keat Tang <keat@propelleraero.com.au>",
@@ -20,6 +20,7 @@
         "koa-session": "^5.10.1",
         "openid-client": "^2.4.5",
         "shelljs": "^0.8.3",
+        "winston": "^3.1.0",
         "yargs": "^12.0.5"
     },
     "devDependencies": {
