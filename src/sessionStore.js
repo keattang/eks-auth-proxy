@@ -1,18 +1,20 @@
 const crypto = require('crypto');
+const LRU = require('lru-cache');
+const { maxSessions } = require('./config');
 
 const getNewSessionKey = () => crypto.randomBytes(32).toString('hex');
 
 class InMemorySessionStore {
     constructor() {
-        this.store = {};
+        this.store = new LRU(maxSessions);
     }
 
     getSession(key) {
-        return this.store[key];
+        return this.store.get(key);
     }
 
     setSession(key, data) {
-        this.store[key] = data;
+        this.store.set(key, data);
     }
 
     newSession(data) {
@@ -22,7 +24,7 @@ class InMemorySessionStore {
     }
 
     deleteSession(key) {
-        delete this.store[key];
+        this.store.del(key);
     }
 }
 

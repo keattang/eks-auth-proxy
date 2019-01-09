@@ -21,6 +21,14 @@ const parser = yargs
                 group: 'Server options',
                 demandOption: true,
             },
+            'max-sessions': {
+                describe:
+                    'The maximum number of sessions to store in memory. This is useful to keep memory usage low if you expect high levels of use.',
+                type: 'number',
+                requiresArg: true,
+                group: 'Server options',
+                default: Infinity,
+            },
             'login-url': {
                 describe:
                     'The path to the login page. Unauthenticated requests are redirect to this page.',
