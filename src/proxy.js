@@ -6,8 +6,12 @@ module.exports = proxy(proxyHost, {
     preserveHostHdr: proxyPreserveHost,
     proxyReqOptDecorator: (options, ctx) => {
         const optionsCopy = { ...options };
-        const { eksToken } = ctx.state.user;
-        optionsCopy.headers.Authorization = `Bearer ${eksToken.token}`;
+
+        if (ctx.state.user) {
+            const { eksToken } = ctx.state.user;
+            optionsCopy.headers.Authorization = `Bearer ${eksToken.token}`;
+        }
+
         return optionsCopy;
     },
 });
