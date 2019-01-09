@@ -43,12 +43,14 @@ const parser = yargs
                 demandOption: true,
             },
             'iam-role': {
+                alias: 'iam-roles',
                 describe:
-                    'The IAM role ARN to assume when logging in. The temporary credentials from this role will be used to generate the EKS auth token.',
+                    'The IAM role ARN to assume when logging in. The temporary credentials from this role will be used to generate the EKS auth token. You can use this flag multiple times to allow users to select a role.',
                 type: 'string',
                 requiresArg: true,
                 group: 'AWS options',
                 demandOption: true,
+                array: true,
             },
             'iam-session-duration': {
                 describe:

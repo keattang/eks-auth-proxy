@@ -1,7 +1,13 @@
 const { Issuer } = require('openid-client');
 const { Strategy } = require('openid-client');
 const { getEksAuthToken, getTemporaryAwsCredentials } = require('./aws');
-const { clientSecret, clientId, oidcIssuer, loginUrl } = require('./config');
+const {
+    clientSecret,
+    clientId,
+    oidcIssuer,
+    loginUrl,
+    iamRoles,
+} = require('./config');
 
 let passportStrategy;
 
@@ -21,10 +27,15 @@ const getClient = async () => {
 };
 
 // Take the info returned from the OIDC provider and return a user object
-const handleAuthenticationSuccess = async (tokenset, userinfo, done) => {
+const handleAuthenticationSuccess = async function handleAuthenticationSuccess(
+    tokenset,
+    userinfo,
+    done
+) {
     const awsCredentials = await getTemporaryAwsCredentials(
         userinfo.email,
-        tokenset.id_token
+        tokenset.id_token,
+        this.iamRole
     );
     const eksToken = getEksAuthToken(awsCredentials);
     const user = { id: userinfo.sub, ...userinfo, eksToken, awsCredentials };
@@ -51,11 +62,17 @@ const getPassportStrategy = async () => {
     return passportStrategy;
 };
 
-// Sets the redirect_uri on each request. This allows us to dynamically construct the redirect URL
-// based on the host and protocol context parameters
-const dynamicRedirectUrlMiddleware = async (ctx, next) => {
+// Sets the redirect_uri dynamically based on the host and uses the `iam_role` query parameter
+// to dynamically set the role to be assumed
+const dynamicStrategyMiddleware = async (ctx, next) => {
     const strategy = await getPassportStrategy();
     strategy._params.redirect_uri = getRedirectUrl(ctx);
+
+    const roleIndex = parseInt(ctx.query.iam_role, 10);
+    if (!Number.isNaN(roleIndex)) {
+        strategy.iamRole = iamRoles[roleIndex];
+    }
+
     await next();
 };
 
@@ -64,5 +81,5 @@ module.exports = {
     getPassportStrategy,
     getBasePath,
     getCallbackPath,
-    dynamicRedirectUrlMiddleware,
+    dynamicStrategyMiddleware,
 };

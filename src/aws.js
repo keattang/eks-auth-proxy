@@ -3,7 +3,7 @@ const shell = require('shelljs');
 const {
     clusterName,
     loginUrl,
-    iamRole,
+    iamRoles,
     iamSessionDuration,
 } = require('./config');
 const { expired } = require('./utilities');
@@ -48,15 +48,19 @@ const callAuthenticator = credentials => {
     return JSON.parse(result.stdout);
 };
 
-const getTemporaryAwsCredentials = (email, idToken) =>
-    sts
+const getTemporaryAwsCredentials = (email, idToken, role = iamRoles[0]) => {
+    log.debug(
+        `Assuming role ${role} with sessionName ${email} and token ${idToken}`
+    );
+    return sts
         .assumeRoleWithWebIdentity({
-            RoleArn: iamRole,
+            RoleArn: role,
             RoleSessionName: email,
             WebIdentityToken: idToken,
             DurationSeconds: iamSessionDuration,
         })
         .promise();
+};
 
 const getEksAuthToken = credentials => {
     const eksToken = callAuthenticator(credentials);

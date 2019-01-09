@@ -5,6 +5,13 @@ const expired = (expiry, bufferMs = 0) => {
     return bufferedExpiry <= now;
 };
 
+const getRoleLinkObjects = (roleArns, basePath) =>
+    roleArns.map((arn, idx) => {
+        const name = arn.split('/')[1];
+        return { arn, name, link: `${basePath}?iam_role=${idx}` };
+    });
+
 module.exports = {
     expired,
+    getRoleLinkObjects,
 };

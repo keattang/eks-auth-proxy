@@ -5,6 +5,8 @@ const session = require('koa-session');
 const passport = require('koa-passport');
 const bodyParser = require('koa-bodyparser');
 const helmet = require('koa-helmet');
+const koaEjs = require('koa-ejs');
+const path = require('path');
 const { cookieSecret, port } = require('./config');
 const router = require('./router');
 const {
@@ -29,6 +31,13 @@ const startServer = async () => {
     app.use(bodyParser());
     app.use(session({}, app));
     app.use(helmet());
+
+    // Set up EJS for rendering HTML
+    koaEjs(app, {
+        root: path.join(__dirname, '../templates'),
+        viewExt: 'ejs',
+        layout: false,
+    });
 
     // Set up passport for authentication
     app.use(passport.initialize());
