@@ -27,22 +27,27 @@ Server options
   --cookie-secret  The secret used to sign cookies. This should be a random
                    string that you generate this yourself using a secure
                    algorithm.                                [string] [required]
+  --max-sessions   The maximum number of sessions to store in memory. This is
+                   useful to keep memory usage low if you expect high levels of
+                   use.                             [number] [default: Infinity]
   --login-url      The path to the login page. Unauthenticated requests are
                    redirect to this page.           [string] [default: "/login"]
-
+  --debug          Whether or not to enable DEBUG level logging
+                                                      [boolean] [default: false]
 AWS options
-  --cluster-name          The name of the EKS cluster. This will be used to
-                          generate the EKS auth token.       [string] [required]
-  --iam-role              The IAM role ARN to assume when logging in. The temporary
-                          credentials from this role will be used to generate
-                          the EKS auth token.                [string] [required]
-  --iam-session-duration  The number of seconds that the temporary IAM
-                          credentials should be valid for when assuming the
-                          iam-role. This will equate to the maximum amount of
-                          time that the user will remain logged in for. This
-                          must not exceed the allowed maximum session time of
-                          the role.                                     [number]
-
+  --cluster-name           The name of the EKS cluster. This will be used to
+                           generate the EKS auth token.      [string] [required]
+  --iam-role, --iam-roles  The IAM role ARN to assume when logging in. The
+                           temporary credentials from this role will be used to
+                           generate the EKS auth token. You can use this flag
+                           multiple times to allow users to select a role.
+                                                              [array] [required]
+  --iam-session-duration   The number of seconds that the temporary IAM
+                           credentials should be valid for when assuming the
+                           iam-role. This will equate to the maximum amount of
+                           time that the user will remain logged in for. This
+                           must not exceed the allowed maximum session time of
+                           the role.                                    [number]
 OIDC options
   --client-id      The OIDC client ID from your OIDC provider.
                                                              [string] [required]
@@ -50,15 +55,13 @@ OIDC options
                                                              [string] [required]
   --oidc-issuer    The URL for the OIDC issuer. E.g. https://accounts.google.com
                                                              [string] [required]
-
 Proxy options
   --proxy-host           The host name of the upstream server.
                                                              [string] [required]
   --proxy-use-https      Whether or not to use HTTPS when contacting the
-                         upstream server.              [boolean] [default: true]
+                         upstream server.             [boolean] [default: false]
   --proxy-preserve-host  Whether or not to pass on the host header to the
-                         upstream server.              [boolean] [default: true]
-
+                         upstream server.             [boolean] [default: false]
 Options:
   --version  Show version number                                       [boolean]
   --help     Show help                                                 [boolean]
