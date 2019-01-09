@@ -8,14 +8,29 @@ const {
 } = require('./config');
 const { expired } = require('./utilities');
 const { sessionStore } = require('./sessionStore');
+const log = require('./logger');
 
 const sts = new AWS.STS();
 const EXPIRATION_BUFFER_MS = 1 * 60 * 1000; // 1 minute
 
 const callAuthenticator = credentials => {
-    shell.env.AWS_ACCESS_KEY_ID = credentials.AccessKeyId;
-    shell.env.AWS_SECRET_ACCESS_KEY = credentials.SecretAccessKey;
-    shell.env.AWS_SESSION_TOKEN = credentials.SessionToken;
+    const {
+        AccessKeyId,
+        SecretAccessKey,
+        SessionToken,
+    } = credentials.Credentials;
+
+    shell.env.AWS_ACCESS_KEY_ID = AccessKeyId;
+    shell.env.AWS_SECRET_ACCESS_KEY = SecretAccessKey;
+    shell.env.AWS_SESSION_TOKEN = SessionToken;
+
+    log.debug(
+        `Calling aws-iam-authenticator with
+        clusterName=${clusterName}
+        AWS_ACCESS_KEY_ID=${AccessKeyId}
+        AWS_SECRET_ACCESS_KEY=${SecretAccessKey}
+        AWS_SESSION_TOKEN=${SessionToken}`
+    );
 
     const result = shell.exec(
         `./binaries/aws-iam-authenticator token -i ${clusterName}`,
