@@ -61,12 +61,20 @@ AWS options
                            must not exceed the allowed maximum session time of
                            the role.                                    [number]
 OIDC options
-  --client-id      The OIDC client ID from your OIDC provider.
+  --client-id                      The OIDC client ID from your OIDC provider.
                                                              [string] [required]
-  --client-secret  The OIDC client secret from your OIDC provider.
+  --client-secret                  The OIDC client secret from your OIDC
+                                   provider.                 [string] [required]
+  --oidc-issuer                    The URL for the OIDC issuer. E.g.
+                                   https://accounts.google.com
                                                              [string] [required]
-  --oidc-issuer    The URL for the OIDC issuer. E.g. https://accounts.google.com
-                                                             [string] [required]
+  --email-domain, --email-domains  Specify this option to restrict access to
+                                   users with a certain email address domain.
+                                   You can specify this option multiple times to
+                                   restrict to multiple domains.         [array]
+  --ignore-email-verification      Whether or not to allow users where their
+                                   email_verfied claim is false.
+                                                      [boolean] [default: false]
 Proxy options
   --proxy-host           The host name of the upstream server.
                                                              [string] [required]
