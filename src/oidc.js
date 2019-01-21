@@ -7,6 +7,8 @@ const {
     oidcIssuer,
     loginUrl,
     iamRoles,
+    emailDomains,
+    ignoreEmailVerification,
 } = require('./config');
 
 let passportStrategy;
@@ -33,12 +35,45 @@ const getAssumeRoleErrorMessage = (error, roleArn) => {
     return `Unable to assume role ${roleArn}. Check that it is correctly configured.`;
 };
 
+const validateEmail = userinfo => {
+    // Check that the email address domain is valid if --email-domain(s) is specified
+    if (emailDomains !== undefined) {
+        const validDomain = emailDomains.some(domain =>
+            userinfo.email.endsWith(`@${domain}`)
+        );
+        if (!validDomain) {
+            return {
+                emailValid: false,
+                emailError: 'Your email address domain is not allowed.',
+            };
+        }
+    }
+
+    // Make sure the email address has been verified by the IDP
+    if (!userinfo.email_verified && !ignoreEmailVerification) {
+        return {
+            emailValid: false,
+            emailError:
+                'Your email address must be verified with your identity provider before you can log in.',
+        };
+    }
+
+    return { emailValid: true };
+};
+
 // Take the info returned from the OIDC provider and return a user object
 // This cannot be an arrow function as we rely on `this` to be the strategy that
 // calls this function
 async function handleAuthenticationSuccess(tokenset, userinfo, done) {
     let awsCredentials;
 
+    // Check the email address
+    const { emailValid, emailError } = validateEmail(userinfo);
+    if (!emailValid) {
+        return done(null, false, { message: emailError });
+    }
+
+    // Assume the IAM role
     try {
         awsCredentials = await getTemporaryAwsCredentials(
             userinfo.email,
@@ -52,8 +87,10 @@ async function handleAuthenticationSuccess(tokenset, userinfo, done) {
         });
     }
 
+    // Get and set the cluster auth details
     const eksToken = getEksAuthToken(awsCredentials);
     const user = { id: userinfo.sub, ...userinfo, eksToken, awsCredentials };
+
     return done(null, user);
 }
 

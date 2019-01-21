@@ -89,6 +89,23 @@ const parser = yargs
                 group: 'OIDC options',
                 demandOption: true,
             },
+            'email-domain': {
+                alias: 'email-domains',
+                describe:
+                    'Specify this option to restrict access to users with a certain email address domain. You can specify this option multiple times to restrict to multiple domains.',
+                type: 'string',
+                requiresArg: true,
+                group: 'OIDC options',
+                demandOption: false,
+                array: true,
+            },
+            'ignore-email-verification': {
+                describe:
+                    'Whether or not to allow users where their email_verfied claim is false.',
+                type: 'boolean',
+                group: 'OIDC options',
+                default: false,
+            },
             'proxy-host': {
                 describe: 'The host name of the upstream server.',
                 type: 'string',
