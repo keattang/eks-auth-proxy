@@ -27,12 +27,32 @@ router.get(
 );
 
 // OIDC authentication callback
-router.get(
-    oidc.getCallbackPath(),
-    passport.authenticate('oidc', {
-        successRedirect: '/',
-        failureRedirect: loginUrl,
-    })
+router.get(oidc.getCallbackPath(), ctx =>
+    passport.authenticate('oidc', async (error, user, info) => {
+        // If authentication failed, render an error message
+        if (error || user === false) {
+            const renderContext = {
+                error,
+                ...info,
+                loginUrl,
+            };
+
+            renderContext.message =
+                renderContext.message ||
+                'An unexpected error occured while trying to log you in.';
+
+            if (renderContext.error) {
+                console.error(renderContext.error);
+            }
+
+            await ctx.render('error', renderContext);
+            return;
+        }
+
+        // Otherwise log the user in and redirect to the root URL
+        await ctx.login(user);
+        ctx.redirect('/');
+    })(ctx)
 );
 
 module.exports = router;

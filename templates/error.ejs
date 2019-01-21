@@ -33,15 +33,21 @@
             .button:hover {
                 background-color: #809099;
             }
+
+            .message {
+                text-align: center;
+                margin-bottom: 24px;
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <% for(var i=0; i < roles.length; i++) { %>
-            <a class="button" href="<%= roles[i].link %>">
-                Login as <%= roles[i].name %>
+            <div class="message">
+                <%= message %>
+            </div>
+            <a class="button" href="<%= loginUrl %>">
+                Try again
             </a>
-            <% } %>
         </div>
     </body>
 </html>

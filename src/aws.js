@@ -77,6 +77,7 @@ const checkAwsCredentialsMiddleware = async (ctx, next) => {
 
     if (expired(awsCredentials.Credentials.Expiration, EXPIRATION_BUFFER_MS)) {
         sessionStore.deleteSession(sessionKey);
+        ctx.logout();
         ctx.redirect(loginUrl);
         return;
     }

@@ -26,21 +26,36 @@ const getClient = async () => {
     });
 };
 
+const getAssumeRoleErrorMessage = (error, roleArn) => {
+    if (error.code === 'AccessDenied') {
+        return `You do not have permission to assume the role ${roleArn}`;
+    }
+    return `Unable to assume role ${roleArn}. Check that it is correctly configured.`;
+};
+
 // Take the info returned from the OIDC provider and return a user object
-const handleAuthenticationSuccess = async function handleAuthenticationSuccess(
-    tokenset,
-    userinfo,
-    done
-) {
-    const awsCredentials = await getTemporaryAwsCredentials(
-        userinfo.email,
-        tokenset.id_token,
-        this.iamRole
-    );
+// This cannot be an arrow function as we rely on `this` to be the strategy that
+// calls this function
+async function handleAuthenticationSuccess(tokenset, userinfo, done) {
+    let awsCredentials;
+
+    try {
+        awsCredentials = await getTemporaryAwsCredentials(
+            userinfo.email,
+            tokenset.id_token,
+            this.iamRole
+        );
+    } catch (e) {
+        return done(null, false, {
+            error: e,
+            message: getAssumeRoleErrorMessage(e, this.iamRole || iamRoles[0]),
+        });
+    }
+
     const eksToken = getEksAuthToken(awsCredentials);
     const user = { id: userinfo.sub, ...userinfo, eksToken, awsCredentials };
     return done(null, user);
-};
+}
 
 const getPassportStrategy = async () => {
     if (passportStrategy !== undefined) {
