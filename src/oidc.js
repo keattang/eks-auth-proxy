@@ -19,7 +19,7 @@ const getRedirectUrl = ctx =>
     `${ctx.protocol}://${ctx.host}${getCallbackPath()}`;
 
 const getClient = async () => {
-    Issuer.defaultHttpOptions = { timeout: 5000 };
+    Issuer.defaultHttpOptions = { timeout: 30000 };
     const issuer = await Issuer.discover(oidcIssuer);
 
     return new issuer.Client({
