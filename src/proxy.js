@@ -8,6 +8,8 @@ const proxyTarget = `${proxyProtocol}://${proxyHost}`;
 
 log.info(`Proxying requests to ${proxyTarget}`);
 
+// Based on example posted here
+// https://github.com/nodejitsu/node-http-proxy/issues/1156
 const proxy = httpProxy.createProxyServer({
     target: proxyTarget,
     xfwd: true,
