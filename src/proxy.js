@@ -1,30 +1,44 @@
-const proxy = require('koa-better-http-proxy');
-const {
-    proxyHost,
-    proxyUseHttps,
-    proxyPreserveHost,
-    loginUrl,
-} = require('./config');
+const httpProxy = require('http-proxy');
+const { proxyHost, proxyUseHttps, proxyPreserveHost } = require('./config');
 const log = require('./logger');
+const { getProxyReqHeaders } = require('./utilities');
 
-module.exports = proxy(proxyHost, {
-    https: proxyUseHttps,
-    preserveHostHdr: proxyPreserveHost,
-    filter: ctx => !ctx.path.startsWith(loginUrl),
-    proxyReqOptDecorator: (options, ctx) => {
-        const optionsCopy = { ...options };
+const proxyProtocol = proxyUseHttps ? 'https' : 'http';
+const proxyTarget = `${proxyProtocol}://${proxyHost}`;
 
-        if (ctx.state.user) {
-            const { eksToken } = ctx.state.user;
-            optionsCopy.headers.Authorization = `Bearer ${eksToken.token}`;
+log.info(`Proxying requests to ${proxyTarget}`);
 
-            log.debug(
-                `Upstream request headers: ${JSON.stringify(
-                    optionsCopy.headers
-                )}`
-            );
-        }
-
-        return optionsCopy;
-    },
+const proxy = httpProxy.createProxyServer({
+    target: proxyTarget,
+    xfwd: true,
+    secure: true,
+    changeOrigin: !proxyPreserveHost,
 });
+
+// Alter the outgoing proxy request to add the Authroization header
+proxy.on('proxyReq', (proxyReq, req) => {
+    if (!req.user) {
+        return;
+    }
+    const { eksToken } = req.user;
+    proxyReq.setHeader('Authorization', `Bearer ${eksToken.token}`);
+
+    log.debug(
+        `Upstream request headers: ${JSON.stringify(
+            getProxyReqHeaders(proxyReq)
+        )}`
+    );
+});
+
+const proxyMiddleware = ctx => {
+    ctx.respond = false; // Required to prevent koa from sending out headers
+    proxy.web(ctx.req, ctx.res);
+};
+
+const proxyWebSocket = (req, socket, head) => proxy.ws(req, socket, head);
+
+module.exports = {
+    proxy,
+    proxyMiddleware,
+    proxyWebSocket,
+};

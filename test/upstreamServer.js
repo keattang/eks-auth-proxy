@@ -8,6 +8,9 @@ const startServer = async () => {
         console.log(ctx.headers);
         ctx.body = `I'm the upstream server :)
 
+            I got this Host header:
+            ${ctx.headers.host}
+
             I got this Authorization header:
             ${ctx.headers.authorization}
         `;

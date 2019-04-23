@@ -3,15 +3,15 @@ const Router = require('koa-router');
 const { loginUrl, iamRoles } = require('./config');
 const oidc = require('./oidc');
 const { getRoleLinkObjects } = require('./utilities');
+const log = require('./logger');
 
 const router = new Router();
 
 // If there is only one role redirect straight to the appropriate login handler
 // Otherwise show a list of buttons allowing the user to select the role to login with
-router.get(loginUrl, async (ctx, next) => {
+router.get(loginUrl, async ctx => {
     if (iamRoles.length === 1) {
         ctx.redirect(oidc.getBasePath());
-        await next();
     } else {
         await ctx.render('login', {
             roles: getRoleLinkObjects(iamRoles, oidc.getBasePath()),
@@ -42,7 +42,7 @@ router.get(oidc.getCallbackPath(), ctx =>
                 'An unexpected error occured while trying to log you in.';
 
             if (renderContext.error) {
-                console.error(renderContext.error);
+                log.error(renderContext.error);
             }
 
             await ctx.render('error', renderContext);

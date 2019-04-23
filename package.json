@@ -1,6 +1,6 @@
 {
     "name": "eks-auth-proxy",
-    "version": "1.6.1",
+    "version": "1.7.0",
     "description": "Authentication proxy for Amazon EKS",
     "main": "src/index.js",
     "author": "Keat Tang <keat@propelleraero.com.au>",
@@ -11,6 +11,7 @@
     "dependencies": {
         "aws-sdk": "^2.384.0",
         "dotenv": "^6.2.0",
+        "http-proxy": "^1.17.0",
         "koa": "^2.6.2",
         "koa-better-http-proxy": "^0.2.4",
         "koa-bodyparser": "^4.2.1",

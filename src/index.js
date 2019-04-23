@@ -13,7 +13,7 @@ const {
     configurePassport,
     unAuthenticatedRedirectMiddleware,
 } = require('./passport');
-const proxy = require('./proxy');
+const { proxyMiddleware, proxyWebSocket } = require('./proxy');
 const {
     refreshEksTokenMiddleware,
     checkAwsCredentialsMiddleware,
@@ -52,14 +52,16 @@ const startServer = async () => {
     // Refresh the EKS auth token if it has expired
     app.use(refreshEksTokenMiddleware);
 
-    // Proxy all requests on any path not defined in the router to proxyHost
-    app.use(proxy);
-
     // Handle routes (e.g. for login)
     app.use(router.routes());
     app.use(router.allowedMethods());
 
-    app.listen(port);
+    // Proxy all requests on any path not defined in the router to proxyHost
+    app.use(proxyMiddleware);
+
+    const server = app.listen(port);
+    server.on('upgrade', proxyWebSocket);
+
     log.info(`Proxy server running on port ${port}`);
 };
 
