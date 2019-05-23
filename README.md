@@ -6,6 +6,8 @@ The server is designed to sit behind a trusted reverse proxy (e.g. nginx, ELB, A
 
 Currently, only OIDC identity providers are supported but this could be extended to also support SAML providers. (Pull requests welcome) For more information on setting up an OIDC identity provider in AWS see [this article](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html)
 
+![alt text](./images/architecture.png 'Architecture Diagram')
+
 ## Prerequisites
 
 Before running this server you will need to do the following:
