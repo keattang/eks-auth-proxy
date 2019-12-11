@@ -11,7 +11,7 @@ const { cookieSecret, port } = require('./config');
 const router = require('./router');
 const {
     configurePassport,
-    unAuthenticatedRedirectMiddleware,
+    checkAuthenticatedMiddleware,
 } = require('./passport');
 const { proxyMiddleware, proxyWebSocket } = require('./proxy');
 const {
@@ -44,7 +44,7 @@ const startServer = async () => {
     app.use(passport.session());
 
     // Redirect users to the login page if they are not authenticated
-    app.use(unAuthenticatedRedirectMiddleware);
+    app.use(checkAuthenticatedMiddleware);
 
     // Redirect users to the login page if their AWS creds have expired
     app.use(checkAwsCredentialsMiddleware);

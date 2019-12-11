@@ -88,3 +88,31 @@ Options:
   --version  Show version number                                       [boolean]
   --help     Show help                                                 [boolean]
 ```
+
+## Routes
+
+The auth proxy namespaces all its routes under the given `--login-url` which defaults to `/login`. The proxy routes are:
+
+-   `/login`: This is the login page. It will display a list of roles to assume or will automatically redirect to your auth provider if you only have one role configured. If you are not authenticated and you navigate to a route that does not begin with `/login` you will be redirected to `/login`
+
+-   `/login/check`: This route returns a 200 if you are authenticated and a 401 if not. This is useful for integrating with Nginx.
+
+## Development
+
+To run and test the eks-auth-proxy locally, create a `.env` file in the project root with at least the following values:
+
+```
+EKS_AUTH_CLUSTER_NAME=
+EKS_AUTH_IAM_ROLE=
+EKS_AUTH_CLIENT_ID=
+EKS_AUTH_CLIENT_SECRET=
+EKS_AUTH_OIDC_ISSUER=
+EKS_AUTH_COOKIE_SECRET=
+EKS_AUTH_DEBUG=true
+```
+
+Then run `docker-compose up`. This will spin up the eks-auth-proxy at `http://localhost:3001` in front of a mock upstream server. You can edit the upstream server in the file `test/upstreamServer.js`.
+
+### Docker hub deployment
+
+In order to publish a new version to Docker hub, push your code changes to up to GitHub and tag a release with the format `vx.x.x`. Docker hub will automatically pick up this release and publish it.

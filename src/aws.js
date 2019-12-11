@@ -68,6 +68,8 @@ const getEksAuthToken = credentials => {
 };
 
 const checkAwsCredentialsMiddleware = async (ctx, next) => {
+    ctx.state.awsCredentialsValid = false;
+
     if (!ctx.state.user || ctx.path.startsWith(loginUrl)) {
         await next();
         return;
@@ -81,6 +83,8 @@ const checkAwsCredentialsMiddleware = async (ctx, next) => {
         ctx.redirect(loginUrl);
         return;
     }
+
+    ctx.state.awsCredentialsValid = true;
 
     await next();
 };

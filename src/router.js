@@ -19,6 +19,15 @@ router.get(loginUrl, async ctx => {
     }
 });
 
+// Return 200 if the user is logged in, otherwise return 401
+router.get(`${loginUrl}/check`, async ctx => {
+    if (ctx.isAuthenticated() && !ctx.state.awsCredentialsValid) {
+        ctx.body = 'OK';
+        return;
+    }
+    ctx.throw(401);
+});
+
 // Start OIDC authentication request
 router.get(
     oidc.getBasePath(),

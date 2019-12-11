@@ -24,7 +24,7 @@ const configurePassport = async () => {
 };
 
 // Redirect users to the login page if they are not authenticated
-const unAuthenticatedRedirectMiddleware = async (ctx, next) => {
+const checkAuthenticatedMiddleware = async (ctx, next) => {
     if (!ctx.isAuthenticated() && !ctx.path.startsWith(loginUrl)) {
         ctx.redirect(loginUrl);
         return;
@@ -32,4 +32,4 @@ const unAuthenticatedRedirectMiddleware = async (ctx, next) => {
     await next();
 };
 
-module.exports = { configurePassport, unAuthenticatedRedirectMiddleware };
+module.exports = { configurePassport, checkAuthenticatedMiddleware };

@@ -1,0 +1,25 @@
+version: '3.2'
+services:
+  eks-auth-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - ./start
+      - --proxy-host=upstream:3002
+    env_file:
+      - .env
+    ports:
+      - 3001:3001
+    volumes:
+      - .:/app
+
+  upstream:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - node
+      - test/upstreamServer.js
+    volumes:
+      - .:/app
