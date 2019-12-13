@@ -3,7 +3,6 @@ require('dotenv').config();
 const Koa = require('koa');
 const session = require('koa-session');
 const passport = require('koa-passport');
-const bodyParser = require('koa-bodyparser');
 const helmet = require('koa-helmet');
 const koaEjs = require('koa-ejs');
 const path = require('path');
@@ -28,7 +27,9 @@ const startServer = async () => {
     // Some prerequisites and securtity features
     app.keys = [cookieSecret];
     app.proxy = true; // Trust down stream proxy header fields
-    app.use(bodyParser());
+
+    // NOTE: Do not parse the body of the incoming request (using body parser or the like)
+    // or the proxy will not be able to forward it on.
     app.use(session({}, app));
     app.use(helmet());
 

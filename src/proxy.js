@@ -33,9 +33,7 @@ proxy.on('proxyReq', (proxyReq, req) => {
 });
 
 // Log errors
-proxy.on('error', e => {
-    console.log(e);
-});
+proxy.on('error', log.error);
 
 const proxyMiddleware = ctx => {
     ctx.respond = false; // Required to prevent koa from sending out headers
