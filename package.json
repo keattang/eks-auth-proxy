@@ -11,7 +11,7 @@
     "dependencies": {
         "aws-sdk": "^2.384.0",
         "dotenv": "^6.2.0",
-        "http-proxy": "^1.18.0",
+        "http-proxy": "^1.18.1",
         "koa": "^2.6.2",
         "koa-ejs": "^4.2.0",
         "koa-helmet": "^4.0.0",
