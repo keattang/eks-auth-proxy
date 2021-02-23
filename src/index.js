@@ -62,6 +62,7 @@ const startServer = async () => {
 
     const server = app.listen(port);
     server.on('upgrade', proxyWebSocket);
+    server.on('error', log.error.bind(log));
 
     log.info(`Proxy server running on port ${port}`);
 };
