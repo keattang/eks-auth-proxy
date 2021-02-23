@@ -1,6 +1,6 @@
 {
     "name": "eks-auth-proxy",
-    "version": "1.8.3",
+    "version": "1.8.4",
     "description": "Authentication proxy for Amazon EKS",
     "main": "src/index.js",
     "author": "Keat Tang <keat@propelleraero.com.au>",
@@ -10,28 +10,28 @@
     },
     "dependencies": {
         "aws-sdk": "^2.384.0",
-        "dotenv": "^6.2.0",
+        "dotenv": "^8.2.0",
         "http-proxy": "^1.18.1",
         "koa": "^2.6.2",
         "koa-ejs": "^4.2.0",
-        "koa-helmet": "^4.0.0",
+        "koa-helmet": "^6.0.0",
         "koa-passport": "^4.1.1",
-        "koa-router": "^7.4.0",
-        "koa-session": "^5.10.1",
-        "lru-cache": "^5.1.1",
-        "openid-client": "^2.4.5",
+        "koa-router": "^10.0.0",
+        "koa-session": "^6.1.0",
+        "lru-cache": "^6.0.0",
+        "openid-client": "^4.4.0",
         "shelljs": "^0.8.3",
         "winston": "^3.1.0",
-        "yargs": "^12.0.5"
+        "yargs": "^16.2.0"
     },
     "devDependencies": {
-        "eslint": "^5.12.0",
-        "eslint-config-airbnb-base": "^13.1.0",
-        "eslint-config-prettier": "^3.3.0",
+        "eslint": "^7.20.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-prettier": "^8.0.0",
         "eslint-plugin-import": "^2.14.0",
         "eslint-plugin-prettier": "^3.0.1",
-        "nodemon": "^1.18.9",
-        "prettier": "^1.15.3",
-        "prettier-eslint": "^8.8.2"
+        "nodemon": "^2.0.7",
+        "prettier": "^2.2.1",
+        "prettier-eslint": "^12.0.0"
     }
 }
