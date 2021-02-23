@@ -1,5 +1,4 @@
-const { Issuer } = require('openid-client');
-const { Strategy } = require('openid-client');
+const { Issuer, Strategy, custom } = require('openid-client');
 const { getEksAuthToken, getTemporaryAwsCredentials } = require('./aws');
 const {
     clientSecret,
@@ -11,6 +10,13 @@ const {
     ignoreEmailVerification,
 } = require('./config');
 
+// Set global request timeout for the OIDC library. This is relatively high as some
+// providers can take a while to respond.
+// https://github.com/panva/node-openid-client/blob/main/docs/README.md#customizing-http-requests
+custom.setHttpOptionsDefaults({
+    timeout: 30000,
+});
+
 let passportStrategy;
 
 const getBasePath = () => `${loginUrl}/oauth`;
@@ -19,7 +25,6 @@ const getRedirectUrl = ctx =>
     `${ctx.protocol}://${ctx.host}${getCallbackPath()}`;
 
 const getClient = async () => {
-    Issuer.defaultHttpOptions = { timeout: 30000 };
     const issuer = await Issuer.discover(oidcIssuer);
 
     return new issuer.Client({
