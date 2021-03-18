@@ -11,16 +11,7 @@ const getRoleLinkObjects = (roleArns, basePath) =>
         return { arn, name, link: `${basePath}?iam_role=${idx}` };
     });
 
-const getProxyReqHeaders = proxyReq => {
-    const symbols = Object.getOwnPropertySymbols(proxyReq);
-    const headerKey = symbols.find(
-        s => s.toString() === 'Symbol(outHeadersKey)'
-    );
-    return proxyReq[headerKey];
-};
-
 module.exports = {
     expired,
     getRoleLinkObjects,
-    getProxyReqHeaders,
 };

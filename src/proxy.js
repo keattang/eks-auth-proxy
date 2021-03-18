@@ -1,7 +1,6 @@
 const httpProxy = require('http-proxy');
 const { proxyHost, proxyUseHttps, proxyPreserveHost } = require('./config');
 const log = require('./logger');
-const { getProxyReqHeaders } = require('./utilities');
 
 const proxyProtocol = proxyUseHttps ? 'https' : 'http';
 const proxyTarget = `${proxyProtocol}://${proxyHost}`;
@@ -26,16 +25,14 @@ proxy.on('proxyReq', (proxyReq, req) => {
     proxyReq.setHeader('Authorization', `Bearer ${eksToken.token}`);
 
     log.debug(
-        `Upstream request headers: ${JSON.stringify(
-            getProxyReqHeaders(proxyReq)
-        )}`
+        `Upstream request headers: ${JSON.stringify(proxyReq.getHeaders())}`
     );
 });
 
 // Log errors
 proxy.on('error', log.error.bind(log));
 
-const proxyMiddleware = ctx => {
+const proxyMiddleware = (ctx) => {
     ctx.respond = false; // Required to prevent koa from sending out headers
     proxy.web(ctx.req, ctx.res);
 };
