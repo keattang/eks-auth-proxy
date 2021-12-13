@@ -127,6 +127,14 @@ const parser = yargs
                 default: false,
                 group: 'Proxy options',
             },
+            'proxy-forward-user-attr': {
+                describe:
+                    'Forwarded attributes of the authenticated user to the upstream server.',
+                type: 'string',
+                default: [],
+                group: 'Proxy options',
+                array: true,
+            },
         });
     });
 

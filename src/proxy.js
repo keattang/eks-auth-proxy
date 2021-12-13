@@ -1,5 +1,11 @@
 const httpProxy = require('http-proxy');
-const { proxyHost, proxyUseHttps, proxyPreserveHost } = require('./config');
+const {
+    proxyHost,
+    proxyUseHttps,
+    proxyPreserveHost,
+    proxyForwardUserAttr
+} = require('./config');
+
 const log = require('./logger');
 
 const proxyProtocol = proxyUseHttps ? 'https' : 'http';
@@ -23,6 +29,13 @@ proxy.on('proxyReq', (proxyReq, req) => {
     }
     const { eksToken } = req.user;
     proxyReq.setHeader('Authorization', `Bearer ${eksToken.token}`);
+
+    proxyForwardUserAttr.forEach(item => {
+        const parsed = JSON.parse(item);
+        const forwardHeaderName = Object.keys(parsed)[0];
+        const mappedUserAttr = parsed[forwardHeaderName];
+        proxyReq.setHeader(forwardHeaderName, req.user[mappedUserAttr]);
+    });
 
     log.debug(
         `Upstream request headers: ${JSON.stringify(proxyReq.getHeaders())}`
