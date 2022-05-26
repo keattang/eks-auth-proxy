@@ -23,22 +23,40 @@ const startServer = async () => {
 
     app.use(async ctx => {
         console.log(ctx.headers);
-        ctx.body = `I'm the upstream server :)
+        let content = `
+            <h2>I'm the upstream server :)</h2>
 
-            I got this Host header:
-            ${ctx.headers.host}
+            <h3>I got this Host header:</h3>
+            <pre>${ctx.headers.host}</pre>
 
-            I got this Authorization header:
-            ${ctx.headers.authorization}
+            <h3>I got this Authorization header:</h3>
+            <pre>${ctx.headers.authorization}</pre>
         `;
 
         if (ctx.request.body) {
-            ctx.body += `
-
-            I got this request body:
-            ${ctx.request.body}
+            content += `
+                <h3>I got this request body:</h3>
+                <pre>${ctx.request.body}</pre>
             `;
         }
+
+        ctx.body = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Document</title>
+                <!-- Content Security Policy blocks inline execution of scripts and stylesheets -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" media="print" onload="this.media='all'" />
+                <!-- Content Security Policy blocks inline execution of scripts and stylesheets -->
+            </head>
+            <body>
+                ${content}
+            </body>
+            </html>
+        `;
     });
 
     app.listen(3002);

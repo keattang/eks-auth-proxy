@@ -127,6 +127,13 @@ const parser = yargs
                 default: false,
                 group: 'Proxy options',
             },
+            'proxy-disable-csp-header': {
+                describe:
+                    'Whether or not to disable Content Security Policy (CSP) header (not recommendable).',
+                type: 'boolean',
+                default: null,
+                group: 'Proxy options',
+            },
         });
     });
 
