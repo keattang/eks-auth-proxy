@@ -36,57 +36,65 @@ variables by converting the flag to upper-snake case and prefixing with `EKS_AUT
 
 ```
 Server options
-  --port, -p       The port that the proxy server should listen on.
+  -p, --port           The port that the proxy server should listen on.
                                                         [string] [default: 3001]
-  --cookie-secret  The secret used to sign cookies. This should be a random
-                   string that you generate this yourself using a secure
-                   algorithm.                                [string] [required]
-  --max-sessions   The maximum number of sessions to store in memory. This is
-                   useful to keep memory usage low if you expect high levels of
-                   use.                             [number] [default: Infinity]
-  --login-url      The path to the login page. Unauthenticated requests are
-                   redirect to this page.           [string] [default: "/login"]
-  --debug          Whether or not to enable DEBUG level logging
+      --cookie-secret  The secret used to sign cookies. This should be a random
+                       string that you generate this yourself using a secure
+                       algorithm.                            [string] [required]
+      --max-sessions   The maximum number of sessions to store in memory. This
+                       is useful to keep memory usage low if you expect high
+                       levels of use.               [number] [default: Infinity]
+      --login-url      The path to the login page. Unauthenticated requests are
+                       redirect to this page.       [string] [default: "/login"]
+      --debug          Whether or not to enable DEBUG level logging
                                                       [boolean] [default: false]
+
 AWS options
-  --cluster-name           The name of the EKS cluster. This will be used to
-                           generate the EKS auth token.      [string] [required]
-  --iam-role, --iam-roles  The IAM role ARN to assume when logging in. The
-                           temporary credentials from this role will be used to
-                           generate the EKS auth token. You can use this flag
-                           multiple times to allow users to select a role.
-                                                              [array] [required]
-  --iam-session-duration   The number of seconds that the temporary IAM
-                           credentials should be valid for when assuming the
-                           iam-role. This will equate to the maximum amount of
-                           time that the user will remain logged in for. This
-                           must not exceed the allowed maximum session time of
-                           the role.                                    [number]
+      --cluster-name           The name of the EKS cluster. This will be used to
+                               generate the EKS auth token.  [string] [required]
+      --iam-role, --iam-roles  The IAM role ARN to assume when logging in. The
+                               temporary credentials from this role will be used
+                               to generate the EKS auth token. You can use this
+                               flag multiple times to allow users to select a
+                               role.                          [array] [required]
+      --iam-session-duration   The number of seconds that the temporary IAM
+                               credentials should be valid for when assuming the
+                               iam-role. This will equate to the maximum amount
+                               of time that the user will remain logged in for.
+                               This must not exceed the allowed maximum session
+                               time of the role.                        [number]
+
 OIDC options
-  --client-id                      The OIDC client ID from your OIDC provider.
+      --client-id                      The OIDC client ID from your OIDC
+                                       provider.             [string] [required]
+      --client-secret                  The OIDC client secret from your OIDC
+                                       provider.             [string] [required]
+      --oidc-issuer                    The URL for the OIDC issuer. E.g.
+                                       https://accounts.google.com
                                                              [string] [required]
-  --client-secret                  The OIDC client secret from your OIDC
-                                   provider.                 [string] [required]
-  --oidc-issuer                    The URL for the OIDC issuer. E.g.
-                                   https://accounts.google.com
-                                                             [string] [required]
-  --email-domain, --email-domains  Specify this option to restrict access to
-                                   users with a certain email address domain.
-                                   You can specify this option multiple times to
-                                   restrict to multiple domains.         [array]
-  --ignore-email-verification      Whether or not to allow users where their
-                                   email_verfied claim is false.
+      --email-domain, --email-domains  Specify this option to restrict access to
+                                       users with a certain email address
+                                       domain. You can specify this option
+                                       multiple times to restrict to multiple
+                                       domains.                          [array]
+      --ignore-email-verification      Whether or not to allow users where their
+                                       email_verfied claim is false.
                                                       [boolean] [default: false]
+
 Proxy options
-  --proxy-host           The host name of the upstream server.
+      --proxy-host                The host name of the upstream server.
                                                              [string] [required]
-  --proxy-use-https      Whether or not to use HTTPS when contacting the
-                         upstream server.             [boolean] [default: false]
-  --proxy-preserve-host  Whether or not to pass on the host header to the
-                         upstream server.             [boolean] [default: false]
+      --proxy-use-https           Whether or not to use HTTPS when contacting
+                                  the upstream server.[boolean] [default: false]
+      --proxy-preserve-host       Whether or not to pass on the host header to
+                                  the upstream server.[boolean] [default: false]
+      --proxy-disable-csp-header  Whether or not to disable Content Security
+                                  Policy (CSP) header (not recommendable).
+                                                       [boolean] [default: null]
+
 Options:
-  --version  Show version number                                       [boolean]
-  --help     Show help                                                 [boolean]
+      --version  Show version number                                   [boolean]
+      --help     Show help                                             [boolean]
 ```
 
 ## Routes
