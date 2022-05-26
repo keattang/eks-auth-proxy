@@ -6,7 +6,7 @@ const passport = require('koa-passport');
 const helmet = require('koa-helmet');
 const koaEjs = require('koa-ejs');
 const path = require('path');
-const { cookieSecret, port } = require('./config');
+const { cookieSecret, port, proxyDisableCspHeader } = require('./config');
 const router = require('./router');
 const {
     configurePassport,
@@ -31,7 +31,15 @@ const startServer = async () => {
     // NOTE: Do not parse the body of the incoming request (using body parser or the like)
     // or the proxy will not be able to forward it on.
     app.use(session({}, app));
-    app.use(helmet());
+
+    const helmetOptions = {};
+    if (proxyDisableCspHeader) {
+        // This disables the `contentSecurityPolicy` middleware but keeps the rest.
+        // @see https://helmetjs.github.io/
+        helmetOptions.contentSecurityPolicy = false;
+    }
+
+    app.use(helmet(helmetOptions));
 
     // Set up EJS for rendering HTML
     koaEjs(app, {
