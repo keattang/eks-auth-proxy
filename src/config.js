@@ -131,7 +131,7 @@ const parser = yargs
                 describe:
                     'Whether or not to disable Content Security Policy (CSP) header (not recommendable).',
                 type: 'boolean',
-                default: null,
+                default: false,
                 group: 'Proxy options',
             },
         });

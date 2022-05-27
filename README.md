@@ -90,7 +90,7 @@ Proxy options
                                   the upstream server.[boolean] [default: false]
       --proxy-disable-csp-header  Whether or not to disable Content Security
                                   Policy (CSP) header (not recommendable).
-                                                       [boolean] [default: null]
+                                                      [boolean] [default: false]
 
 Options:
       --version  Show version number                                   [boolean]
