@@ -123,4 +123,4 @@ Then run `docker-compose up`. This will spin up the eks-auth-proxy at `http://lo
 
 ### Docker hub deployment
 
-In order to publish a new version to Docker hub, run the `build-and-push vx.x.x` script and create a new release in Github. 
+In order to publish a new version to Docker hub, run the `./build-and-push vx.x.x` script and create a new release in Github. 

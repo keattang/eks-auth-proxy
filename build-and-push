@@ -1,7 +1,10 @@
 set -e -x
 
-IMAGE_TAG="keattang/eks-auth-proxy:$1"
+IMAGE_NAME=keattang/eks-auth-proxy
+VERSIONED_IMAGE_TAG="$IMAGE_NAME:$1"
+LATEST_IMAGE_TAG="$IMAGE_NAME:latest"
 
-docker build -t $IMAGE_TAG .
+docker build -t $VERSIONED_IMAGE_TAG -t $LATEST_IMAGE_TAG .
 
-docker push $IMAGE_TAG
+docker push $VERSIONED_IMAGE_TAG
+docker push $LATEST_IMAGE_TAG
