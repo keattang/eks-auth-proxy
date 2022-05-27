@@ -1,0 +1,7 @@
+set -e -x
+
+IMAGE_TAG="keattang/eks-auth-proxy:$1"
+
+docker build -t $IMAGE_TAG .
+
+docker push $IMAGE_TAG
