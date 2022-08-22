@@ -13,12 +13,9 @@ const log = require('./logger');
 const sts = new AWS.STS();
 const EXPIRATION_BUFFER_MS = 1 * 60 * 1000; // 1 minute
 
-const callAuthenticator = credentials => {
-    const {
-        AccessKeyId,
-        SecretAccessKey,
-        SessionToken,
-    } = credentials.Credentials;
+const callAuthenticator = (credentials) => {
+    const { AccessKeyId, SecretAccessKey, SessionToken } =
+        credentials.Credentials;
 
     shell.env.AWS_ACCESS_KEY_ID = AccessKeyId;
     shell.env.AWS_SECRET_ACCESS_KEY = SecretAccessKey;
@@ -62,7 +59,7 @@ const getTemporaryAwsCredentials = (email, idToken, role = iamRoles[0]) => {
         .promise();
 };
 
-const getEksAuthToken = credentials => {
+const getEksAuthToken = (credentials) => {
     const eksToken = callAuthenticator(credentials);
     return eksToken.status;
 };

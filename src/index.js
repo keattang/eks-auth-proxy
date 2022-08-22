@@ -24,7 +24,7 @@ const startServer = async () => {
 
     const app = new Koa();
 
-    // Some prerequisites and securtity features
+    // Some prerequisites and security features
     app.keys = [cookieSecret];
     app.proxy = true; // Trust down stream proxy header fields
 

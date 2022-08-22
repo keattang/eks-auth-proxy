@@ -21,7 +21,7 @@ let passportStrategy;
 
 const getBasePath = () => `${loginUrl}/oauth`;
 const getCallbackPath = () => `${getBasePath()}/callback`;
-const getRedirectUrl = ctx =>
+const getRedirectUrl = (ctx) =>
     `${ctx.protocol}://${ctx.host}${getCallbackPath()}`;
 
 const getClient = async () => {
@@ -40,10 +40,10 @@ const getAssumeRoleErrorMessage = (error, roleArn) => {
     return `Unable to assume role ${roleArn}. Check that it is correctly configured.`;
 };
 
-const validateEmail = userinfo => {
+const validateEmail = (userinfo) => {
     // Check that the email address domain is valid if --email-domain(s) is specified
     if (emailDomains !== undefined) {
-        const validDomain = emailDomains.some(domain =>
+        const validDomain = emailDomains.some((domain) =>
             userinfo.email.endsWith(`@${domain}`)
         );
         if (!validDomain) {
@@ -123,6 +123,7 @@ const getPassportStrategy = async () => {
 // to dynamically set the role to be assumed
 const dynamicStrategyMiddleware = async (ctx, next) => {
     const strategy = await getPassportStrategy();
+    // eslint-disable-next-line no-underscore-dangle
     strategy._params.redirect_uri = getRedirectUrl(ctx);
 
     const roleIndex = parseInt(ctx.query.iam_role, 10);

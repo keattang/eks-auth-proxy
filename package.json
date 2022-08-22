@@ -1,37 +1,43 @@
 {
     "name": "eks-auth-proxy",
-    "version": "1.9.0",
+    "version": "2.0.0",
     "description": "Authentication proxy for Amazon EKS",
     "main": "src/index.js",
     "author": "Keat Tang <keat@propelleraero.com.au>",
     "license": "MIT",
     "scripts": {
-        "start": "nodemon src/index.js"
+        "start": "nodemon src/index.js",
+        "lint": "eslint .",
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write ."
     },
     "dependencies": {
-        "aws-sdk": "^2.384.0",
-        "dotenv": "^8.2.0",
+        "aws-sdk": "^2.1181.0",
+        "dotenv": "^16.0.1",
         "http-proxy": "^1.18.1",
-        "koa": "^2.6.2",
-        "koa-ejs": "^4.2.0",
-        "koa-helmet": "^6.0.0",
-        "koa-passport": "^4.1.1",
-        "koa-router": "^10.0.0",
-        "koa-session": "^6.1.0",
-        "lru-cache": "^6.0.0",
-        "openid-client": "^4.4.0",
+        "koa": "^2.13.4",
+        "koa-ejs": "^4.3.0",
+        "koa-helmet": "^6.1.0",
+        "koa-passport": "^5.0.0",
+        "koa-router": "^12.0.0",
+        "koa-session": "^6.2.0",
+        "lru-cache": "^7.13.1",
+        "openid-client": "^5.1.8",
         "shelljs": "^0.8.5",
-        "winston": "^3.1.0",
-        "yargs": "^16.2.0"
+        "winston": "^3.8.1",
+        "yargs": "^17.5.1"
     },
     "devDependencies": {
-        "eslint": "^7.20.0",
-        "eslint-config-airbnb-base": "^14.2.1",
-        "eslint-config-prettier": "^8.0.0",
-        "eslint-plugin-import": "^2.14.0",
-        "eslint-plugin-prettier": "^3.0.1",
-        "nodemon": "^2.0.7",
-        "prettier": "^2.2.1",
-        "prettier-eslint": "^12.0.0"
+        "eslint": "^8.20.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "nodemon": "^2.0.19",
+        "prettier": "^2.7.1",
+        "prettier-eslint": "^15.0.1"
+    },
+    "resolutions": {
+        "koa-passport/passport": "0.5.3"
     }
 }

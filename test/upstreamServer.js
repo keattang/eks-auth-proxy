@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('dotenv').config();
 
 const Koa = require('koa');
@@ -6,10 +7,10 @@ const startServer = async () => {
     const app = new Koa();
 
     app.use(async (ctx, next) => {
-        await new Promise(resolve => {
+        await new Promise((resolve) => {
             const data = [];
             ctx.req
-                .on('data', chunk => {
+                .on('data', (chunk) => {
                     data.push(chunk);
                 })
                 .on('end', () => {
@@ -21,7 +22,7 @@ const startServer = async () => {
         await next();
     });
 
-    app.use(async ctx => {
+    app.use(async (ctx) => {
         console.log(ctx.headers);
         let content = `
             <h2>I'm the upstream server :)</h2>

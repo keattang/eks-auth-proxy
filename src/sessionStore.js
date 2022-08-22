@@ -6,7 +6,7 @@ const getNewSessionKey = () => crypto.randomBytes(32).toString('hex');
 
 class InMemorySessionStore {
     constructor() {
-        this.store = new LRU(maxSessions);
+        this.store = new LRU({ max: maxSessions });
     }
 
     getSession(key) {

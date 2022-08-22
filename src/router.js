@@ -9,7 +9,7 @@ const router = new Router();
 
 // If there is only one role redirect straight to the appropriate login handler
 // Otherwise show a list of buttons allowing the user to select the role to login with
-router.get(loginUrl, async ctx => {
+router.get(loginUrl, async (ctx) => {
     if (iamRoles.length === 1) {
         ctx.redirect(oidc.getBasePath());
     } else {
@@ -20,7 +20,7 @@ router.get(loginUrl, async ctx => {
 });
 
 // Return 200 if the user is logged in, otherwise return 401
-router.get(`${loginUrl}/check`, async ctx => {
+router.get(`${loginUrl}/check`, async (ctx) => {
     if (ctx.isAuthenticated() && !ctx.state.awsCredentialsValid) {
         ctx.body = 'OK';
         return;
@@ -36,7 +36,7 @@ router.get(
 );
 
 // OIDC authentication callback
-router.get(oidc.getCallbackPath(), ctx =>
+router.get(oidc.getCallbackPath(), (ctx) =>
     passport.authenticate('oidc', async (error, user, info) => {
         // If authentication failed, render an error message
         if (error || user === false) {

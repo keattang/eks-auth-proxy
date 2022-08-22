@@ -27,7 +27,7 @@ const parser = yargs
                 type: 'number',
                 requiresArg: true,
                 group: 'Server options',
-                default: Infinity,
+                default: 999999,
             },
             'login-url': {
                 describe:
